@@ -58,7 +58,7 @@ export default function Dashboard(props: DashboardProps) {
             Simulación · ESP32 · Riego automatizado
           </div>
           <h1 className="font-['Space_Grotesk'] text-[30px] m-0 font-bold tracking-[-.01em]">
-            Panel de Control de <span className="text-[#59C36A]">Riego</span>
+            Karuyaku Sistema de <span className="text-[#59C36A]">Riego</span>
           </h1>
           <div className="text-[#8FA398] text-[13.5px] mt-1.5 max-w-[520px]">
             Tanque de 20.000&nbsp;L · Terreno de 4.000&nbsp;m² · Sensor capacitivo de humedad + relé + bomba, replicando la lógica real de un ESP32.
