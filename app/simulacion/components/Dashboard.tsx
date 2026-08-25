@@ -3,6 +3,7 @@
 import TankPanel from './TankPanel';
 import TerrainPanel from './TerrainPanel';
 import ControlsPanel from './ControlsPanel';
+import SecurityAlertsPanel from './SecurityAlertsPanel';
 
 interface DashboardProps {
   pumpKey: string;
@@ -116,6 +117,9 @@ export default function Dashboard(props: DashboardProps) {
           onReset={onReset}
         />
       </div>
+
+      {/* Panel de alertas de seguridad */}
+      <SecurityAlertsPanel />
     </>
   );
 }

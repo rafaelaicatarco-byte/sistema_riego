@@ -1,8 +1,12 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret';
+const JWT_SECRET = process.env.JWT_SECRET ?? '';
 const SALT_ROUNDS = 10;
+
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET no está definido. Añade la variable de entorno JWT_SECRET en tu archivo .env.');
+}
 
 export interface JwtPayload {
   userId: number;

@@ -1,0 +1,98 @@
+[
+  {
+    "timestamp": "2026-08-25T02:05:23.548Z",
+    "usuario": "unknown",
+    "accion": "registro_fallido",
+    "resultado": "error",
+    "ip": "::1",
+    "detalle": "Error en registro: \nInvalid `__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__[\"prisma\"].user.findFirst()` invocation in\nD:\\iste españa\\sistema_riego\\.next\\dev\\server\\chunks\\[root-of-the-server]__1sub65k._.js:600:163\n\n  597     });\n  598 }\n  599 // Verificar si el usuario ya existe (username o email)\n→ 600 const existingUser = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__[\"prisma\"].user.findFirst(\nerror: Environment variable not found: DATABASE_URL.\n  -->  schema.prisma:7\n   | \n 6 |   provider = \"mysql\"\n 7 |   url      = env(\"DATABASE_URL\")\n   | \n\nValidation Error Count: 1"
+  },
+  {
+    "timestamp": "2026-08-25T02:10:01.825Z",
+    "usuario": "unknown",
+    "accion": "login_fallido",
+    "resultado": "error",
+    "ip": "::1",
+    "detalle": "Error interno: \nInvalid `__TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__[\"prisma\"].user.findFirst()` invocation in\nD:\\iste españa\\sistema_riego\\.next\\dev\\server\\chunks\\[root-of-the-server]__14_40_y._.js:598:155\n\n  595     });\n  596 }\n  597 // Buscar usuario por username o email\n→ 598 const user = await __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$prisma$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__[\"prisma\"].user.findFirst(\nerror: Environment variable not found: DATABASE_URL.\n  -->  schema.prisma:7\n   | \n 6 |   provider = \"mysql\"\n 7 |   url      = env(\"DATABASE_URL\")\n   | \n\nValidation Error Count: 1"
+  },
+  {
+    "timestamp": "2026-08-25T02:11:27.986Z",
+    "usuario": "unknown",
+    "accion": "registro_fallido",
+    "resultado": "error",
+    "ip": "::1",
+    "detalle": "Error en registro: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+  },
+  {
+    "timestamp": "2026-08-25T02:14:09.331Z",
+    "usuario": "unknown",
+    "accion": "registro_fallido",
+    "resultado": "error",
+    "ip": "::1",
+    "detalle": "Error en registro: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+  },
+  {
+    "timestamp": "2026-08-25T02:14:34.328Z",
+    "usuario": "demouser2",
+    "accion": "registro_exitoso",
+    "resultado": "ok",
+    "ip": "::1",
+    "detalle": "Nuevo usuario registrado: demouser2"
+  },
+  {
+    "timestamp": "2026-08-25T02:14:47.692Z",
+    "usuario": "demouser3",
+    "accion": "registro_exitoso",
+    "resultado": "ok",
+    "ip": "::1",
+    "detalle": "Nuevo usuario registrado: demouser3"
+  },
+  {
+    "timestamp": "2026-08-25T02:14:57.807Z",
+    "usuario": "demo-web-001",
+    "accion": "registro_exitoso",
+    "resultado": "ok",
+    "ip": "::1",
+    "detalle": "Nuevo usuario registrado: demo-web-001"
+  },
+  {
+    "timestamp": "2026-08-25T02:18:55.097Z",
+    "usuario": "unknown",
+    "accion": "login_fallido",
+    "resultado": "error",
+    "ip": "::1",
+    "detalle": "Error interno: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+  },
+  {
+    "timestamp": "2026-08-25T02:19:30.407Z",
+    "usuario": "admin",
+    "accion": "login_exitoso",
+    "resultado": "ok",
+    "ip": "::1",
+    "detalle": "Login exitoso desde IP ::1"
+  },
+  {
+    "timestamp": "2026-08-25T02:20:37.853Z",
+    "usuario": "admin",
+    "accion": "login_exitoso",
+    "resultado": "ok",
+    "ip": "::1",
+    "detalle": "Login exitoso desde IP ::1"
+  },
+  {
+    "timestamp": "2026-08-25T02:21:53.326Z",
+    "usuario": "unknown",
+    "accion": "login_fallido",
+    "resultado": "error",
+    "ip": "::1",
+    "detalle": "Error interno: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+  },
+  {
+    "timestamp": "2026-08-25T02:22:02.096Z",
+    "usuario": "unknown",
+    "accion": "registro_fallido",
+    "resultado": "error",
+    "ip": "::1",
+    "detalle": "Error en registro: Expected property name or '}' in JSON at position 1 (line 1 column 2)"
+  }
+]

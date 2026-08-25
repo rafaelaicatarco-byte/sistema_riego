@@ -24,6 +24,23 @@ function fmtLiters(n: number) {
   return Math.round(n).toLocaleString('es-EC') + ' L';
 }
 
+/**
+ * Registra una acción de seguridad en el servidor.
+ * Principio de ciberseguridad: TRAZABILIDAD — cada acción crítica
+ * se registra para auditoría y detección de anomalías.
+ */
+async function logSecurityAction(accion: string, detalle: string) {
+  try {
+    await fetch('/api/simulation/actions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ accion, detalle }),
+    });
+  } catch {
+    // No bloquear la UI si falla el logging
+  }
+}
+
 export default function SimulacionClient() {
   // --- Auth state ---
   const [loggedIn, setLoggedIn] = useState(false);
@@ -173,10 +190,14 @@ export default function SimulacionClient() {
       if (intervalRef.current) clearInterval(intervalRef.current);
       setRunning(false);
       addLog('=== Sistema pausado ===', 'evt');
+      // Log de seguridad: desactivación de motor
+      logSecurityAction('desactivar_motor', 'Sistema de riego pausado por el usuario');
     } else {
       setRunning(true);
       addLog('=== Sistema iniciado (setup() ejecutado) ===', 'evt');
       addLog(`Parámetros: umbral ON ${low}% · umbral OFF ${high}% · ${lm2} L/m²`, 'evt');
+      // Log de seguridad: activación de motor
+      logSecurityAction('activar_motor', `Bomba activada: umbral ON ${low}%, umbral OFF ${high}%`);
       intervalRef.current = setInterval(tick, 450);
     }
   }, [running, low, high, lm2, addLog, tick]);
@@ -209,6 +230,8 @@ export default function SimulacionClient() {
     setLow(plant.low);
     setHigh(plant.high);
     addLog(`Cultivo seleccionado: ${plant.name} (${plant.cat}) — requerimiento ${plant.lm2} L/m², humedad ideal ${plant.low}%–${plant.high}%`, 'evt');
+    // Log de seguridad: cambio de parámetros de riego
+    logSecurityAction('cambio_parametros_riego', `Cultivo cambiado a ${plant.name} (${plant.cat}), L/m²: ${plant.lm2}`);
   }, [addLog]);
 
   // --- Irrigation change ---
@@ -216,6 +239,8 @@ export default function SimulacionClient() {
     setIrrigKey(v);
     const irrig = IRRIGATION[v];
     addLog(`Sistema de riego: ${irrig.name} (eficiencia ${Math.round(irrig.efficiency * 100)}%, caudal efectivo ×${irrig.flowFactor})`, 'evt');
+    // Log de seguridad: cambio de tipo de riego
+    logSecurityAction('cambio_parametros_riego', `Sistema de riego cambiado a ${irrig.name}`);
   }, [addLog]);
 
   // --- Pump change ---
