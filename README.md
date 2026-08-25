@@ -232,6 +232,124 @@ Abrir [http://localhost:3000](http://localhost:3000) en el navegador.
 
 ---
 
+## 🛡️ Seguridad, exposición OSINT y respuesta a incidentes
+
+### Resumen ejecutivo
+
+Este proyecto aplica un enfoque defensivo en varias capas para mantener la simulación funcional sin comprometer la integridad del sistema. La app combina autenticación basada en JWT, protección de rutas en middleware, validación de entrada, logging estructurado y detección de anomalías para mitigar operaciones sospechosas.
+
+### 1) Middleware de protección de rutas
+
+La protección de rutas queda centralizada en `middleware.ts`:
+
+- Rechaza accesos no autenticados a rutas privadas.
+- Permite rutas públicas como `/`, `/register` y endpoints de autenticación.
+- Verifica cookies `token` y valida el formato/expiración del JWT antes de permitir acceso.
+
+**Principio aplicado:** defensa en profundidad.
+
+### 2) Autenticación endurecida
+
+La autenticación se reforzó con validaciones tanto en frontend como en backend:
+
+- Email con formato válido.
+- Contraseña con mínimo 8 caracteres, mayúscula, minúscula y número.
+- Nombre de usuario con reglas de formato.
+- Hash de contraseñas con `bcryptjs`.
+- Rate limiting por IP y usuario para mitigar fuerza bruta.
+- Tokens JWT con expiración de 7 días y almacenamiento en cookies `httpOnly`.
+
+**Principio aplicado:** validación de entrada + minimización de superficie de ataque.
+
+### 3) Logging y trazabilidad de eventos
+
+Se implementó un sistema de logging para auditoría:
+
+```json
+{
+  "timestamp": "2026-08-24T10:30:00.000Z",
+  "usuario": "admin",
+  "accion": "login_fallido",
+  "resultado": "bloqueado",
+  "ip": "192.168.1.100",
+  "detalle": "Intento bloqueado por rate limiting. Reintentar en 842s"
+}
+```
+
+Los eventos cubren:
+
+- Login exitoso/fallido
+- Registro exitoso/fallido
+- Activación/desactivación del motor
+- Cambios de configuración del tanque
+- Cambios de parámetros de riego
+- Eventos sospechosos detectados por anomalías
+
+**Principio aplicado:** trazabilidad y capacidad de investigación forense.
+
+### 4) Detección de eventos sospechosos
+
+El módulo `lib/anomaly-detection.ts` detecta:
+
+- Más de N intentos fallidos de login en poco tiempo.
+- Activaciones anómalas del motor.
+- Cambios repetidos de configuración del tanque.
+
+Cuando ocurre, el evento se marca como `sospechoso` y el sistema puede mostrarlo en un panel de alertas.
+
+**Principio aplicado:** detección temprana de abuso o manipulación.
+
+### 5) Informe de exposición OSINT (resumen)
+
+Desde la perspectiva de un atacante externo, esta app puede filtrar información útil aunque la capa de seguridad principal esté bien implementada. Los hallazgos más relevantes incluyen:
+
+| Hallazgo | Riesgo | Recomendación |
+|----------|-------|---------------|
+| `X-Powered-By: Next.js` en headers HTTP | Revela stack tecnológico | Ocultar headers con proxy o configuración de Next.js |
+| JWT con posibles fallbacks inseguros | Posible forging si la variable no está configurada | Forzar `JWT_SECRET` en entorno |
+| Validación de entrada y mensajes genéricos | Reducción de exposición de usuarios | Mantener mensajes genéricos |
+| Lógica de simulación visible en cliente | Conocimiento del sistema | Limitar la lógica crítica al servidor en producción |
+| Ausencia de CSP | XSS posible | Configurar `Content-Security-Policy` |
+| Rate limiting limitado a login | Abuso de otras rutas | Extender a middleware o API global |
+| Cookie sin prefijo `__Host-` (en escenarios más estrictos) | Riesgo de manipulación por subdominios | Usar prefijo y `SameSite` estricto |
+
+Estos hallazgos forman parte del documento detallado en [docs/informe-osint.md](docs/informe-osint.md).
+
+### 6) Plan de respuesta a incidentes
+
+La app incluye un plan operacional para tres escenarios clave:
+
+1. Fuerza bruta sobre login.
+2. Activación anómala del motor.
+3. Manipulación de configuración del tanque o sensores.
+
+El documento completo está en [docs/plan-respuesta-incidentes.md](docs/plan-respuesta-incidentes.md).
+
+### 7) Arquitectura defensiva
+
+La visión defensiva de la solución queda representada en [docs/arquitectura-defensiva.md](docs/arquitectura-defensiva.md), con el flujo:
+
+- Usuario
+- Login
+- Middleware de autenticación
+- Rutas protegidas
+- Lógica de riego
+- Base de datos y logs
+- Detección de anomalías
+
+```mermaid
+flowchart TD
+    U[Usuario] --> L[Login]
+    L --> M[Middleware JWT]
+    M --> A[API protegidas]
+    A --> S[Lógica de riego]
+    A --> DB[MySQL + Prisma]
+    A --> LOG[Logs de seguridad]
+    LOG --> AN[Detección de anomalías]
+```
+
+---
+
 ## 🧠 Lógica de simulación
 
 El comportamiento replica fielmente un sistema real con ESP32:
